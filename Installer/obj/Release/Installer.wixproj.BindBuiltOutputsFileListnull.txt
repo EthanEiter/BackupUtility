@@ -1,0 +1,2 @@
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility.Installer.msi
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility.Installer.wixpdb

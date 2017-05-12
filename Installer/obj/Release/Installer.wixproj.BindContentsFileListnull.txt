@@ -1,0 +1,6 @@
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\System.Windows.Interactivity.dll
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\Caliburn.Micro.Platform.Core.dll
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\Caliburn.Micro.dll
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\Caliburn.Micro.Platform.dll
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\Backup.Utility.exe.config
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility\bin\Release\Backup.Utility.exe

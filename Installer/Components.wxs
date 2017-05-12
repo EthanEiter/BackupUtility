@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER" />
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Components">
+            
+            <Component Id="cmpA4C79BC7ECCE305D42D16397FBE307F8" Directory="INSTALLFOLDER" Guid="*">
+                <File Id="filA8A768233E7DBDFBD3F152CAD7FD318F" KeyPath="yes" Source="$(var.SourceDir)\Backup.Utility.exe.config" />
+            </Component>
+            
+            
+            
+            
+            <Component Id="cmpF6DB600EAE4F92B06118C49F01583429" Directory="INSTALLFOLDER" Guid="*">
+                <File Id="fil58D641A69C1F9F9B3767F37A52968AEA" KeyPath="yes" Source="$(var.SourceDir)\Caliburn.Micro.dll" />
+            </Component>
+            <Component Id="cmp3ADD63EC603C0189D3C536D6FE228F29" Directory="INSTALLFOLDER" Guid="*">
+                <File Id="fil22BB2F1FEFE5A4C8C7066B4FFB40BA50" KeyPath="yes" Source="$(var.SourceDir)\Caliburn.Micro.Platform.Core.dll" />
+            </Component>
+            
+            <Component Id="cmp1C206319B53EA02514D73AF8086C62B4" Directory="INSTALLFOLDER" Guid="*">
+                <File Id="filA7E995C50EC209623795FDBA9E10F3FA" KeyPath="yes" Source="$(var.SourceDir)\Caliburn.Micro.Platform.dll" />
+            </Component>
+            
+            
+            <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Directory="INSTALLFOLDER" Guid="*">
+                <File Id="fil17E34524E8398461D615894C92558FE9" KeyPath="yes" Source="$(var.SourceDir)\System.Windows.Interactivity.dll" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

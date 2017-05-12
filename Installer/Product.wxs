@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Backup Utility" Language="1033" Version="1.0.2" Manufacturer="Ethan Eiter" UpgradeCode="2BB03088-89C3-4D06-B644-F1887E5BAA5A">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <Feature Id="ProductFeature" Title="Installer" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <Icon Id="Backup.ico" SourceFile="$(var.SolutionDir)Backup.Utility\Resources\backup.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="Backup.ico" />
+
+    <!--Allow us to use advertised shortcuts that won't actually be advertised...-->
+    <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Backup.Utility"/>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="StartMenuFolder" Name="Backup Utility"/>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <ComponentGroupRef Id="Components" />
+      <ComponentRef Id="Backup.Utility.exe"/>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="Backup.Utility.exe" Directory="INSTALLFOLDER">
+      <File Id="Main.Backup.Utility.exe" KeyPath="yes" Source="$(var.SourceDir)\Backup.Utility.exe">
+        <Shortcut Id="StartMenuShortcut" Directory="StartMenuFolder" Name="Backup Utility" Advertise="yes" WorkingDirectory="INSTALLFOLDER">
+          <Icon Id="Shortcut.ico" SourceFile="$(var.SolutionDir)Backup.Utility\Resources\backup.ico"/>
+        </Shortcut>
+      </File>
+    </Component>
+  </Fragment>
+</Wix>

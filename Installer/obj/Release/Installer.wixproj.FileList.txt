@@ -1,0 +1,7 @@
+obj\Release\Components.wixobj
+obj\Release\Product.wixobj
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility.Installer.msi
+C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Backup.Utility.Installer.wixpdb
+obj\Release\Installer.wixproj.BindContentsFileListnull.txt
+obj\Release\Installer.wixproj.BindOutputsFileListnull.txt
+obj\Release\Installer.wixproj.BindBuiltOutputsFileListnull.txt
