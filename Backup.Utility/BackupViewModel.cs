@@ -14,30 +14,26 @@ namespace Backup.Utility
         public void Exit() => Process.GetCurrentProcess().CloseMainWindow();
 
 
-        public bool PathVis
+        public bool PathVisibility
         {
             get { return SettingsManager.PathVisibility; }
             set
             {
                 SettingsManager.PathVisibility = value;
                 NotifyOfPropertyChange(() => PathVisibility);
-                NotifyOfPropertyChange(() => PathVis);
             }
         }
-        public Visibility PathVisibility => PathVis ? Visibility.Visible : Visibility.Collapsed;
 
 
-        public bool LogVis
+        public bool LogVisibility
         {
             get { return SettingsManager.LogVisibility; }
             set
             {
                 SettingsManager.LogVisibility = value;
                 NotifyOfPropertyChange(() => LogVisibility);
-                NotifyOfPropertyChange(() => LogVis);
             }
         }
-        public Visibility LogVisibility => LogVis ? Visibility.Visible : Visibility.Collapsed;
 
 
         public bool CloseConsole
@@ -49,9 +45,6 @@ namespace Backup.Utility
                 NotifyOfPropertyChange(() => CloseConsole);
             }
         }
-            
-        
-        public string Location =>  "< SELECT BACKUP PATH >";
 
 
         public string BackupPath
@@ -78,22 +71,20 @@ namespace Backup.Utility
         public string Instruction => SettingsManager.DrivesVisibility ? "< SELECT DRIVE >" : "< SELECT PATH TO BACKUP >";
 
 
-        public bool DriveVis
+        public bool DriveVisibility
         {
             get { return SettingsManager.DrivesVisibility; }
             set
             {
                 SettingsManager.DrivesVisibility = value;
                 NotifyOfPropertyChange(() => DriveVisibility);
-                NotifyOfPropertyChange(() => DriveVis);
                 NotifyOfPropertyChange(() => BackupSourceVisibility);
                 NotifyOfPropertyChange(() => Instruction);
                 NotifyOfPropertyChange(() => CanBackup);
                 NotifyOfPropertyChange(() => CanRestore);
             }
         }
-        public Visibility DriveVisibility => DriveVis ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility BackupSourceVisibility => DriveVis ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility BackupSourceVisibility => DriveVisibility ? Visibility.Collapsed : Visibility.Visible;
 
 
         private string _drive;
@@ -139,7 +130,7 @@ namespace Backup.Utility
         {
             get
             {
-                if (DriveVis)
+                if (DriveVisibility)
                     return !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(SelectedDrive));
                 return !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(BackupSource));
             }
@@ -196,10 +187,6 @@ namespace Backup.Utility
             }
         }
 
-
-        public string LogLabel => "< VIEW LOGS >";
-
-
         public List<string> Logs => SettingsManager.LogList;
         private string _log;
         public string SelectedLog
@@ -236,5 +223,8 @@ namespace Backup.Utility
         public static string FileMenuItemText => "< FILE >";
         public static string ViewMenuItemText => "< VIEW >";
         public static string OptionsMenuItemText => "< OPTIONS >";
+
+        public string LogLabel => "< VIEW LOGS >";
+        public string Location => "< SELECT BACKUP PATH >";
     }
 }

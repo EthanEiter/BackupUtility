@@ -3,59 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         ResizeMode="NoResize" Width="496" Height="520" Title="Backup Utility" 
         Icon="pack://application:,,,/Resources/backup.ico"
-        FontFamily="pack//application:,,,/Fonts/TRON.TTF"><!--Doesn't work.. :c-->
+        FontFamily="pack//application:,,,/Fonts/TRON.TTF"><!--Doesn't work..-->
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{Binding FileMenuItemText}" FontSize="12">
+            <MenuItem Header="{Binding FileMenuItemText}" FontSize="10">
                 <MenuItem x:Name="Exit" Header="Exit"/>
             </MenuItem>
-            <MenuItem Header="{Binding ViewMenuItemText}" FontSize="12">
-                <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVis}"/>
-                <MenuItem x:Name="PathVisibility" Header="Backup Path" IsCheckable="True" IsChecked="{Binding PathVis}"/>
-                <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVis}"/>
+            <MenuItem Header="{Binding ViewMenuItemText}" FontSize="10">
+                <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVisibility}"/>
+                <MenuItem x:Name="PathVisibility" Header="Backup Path" IsCheckable="True" IsChecked="{Binding PathVisibility}"/>
+                <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVisibility}"/>
             </MenuItem>
-            <MenuItem Header="{Binding OptionsMenuItemText}" FontSize="12">
+            <MenuItem Header="{Binding OptionsMenuItemText}" FontSize="10">
                 <MenuItem x:Name="CloseConsole" Header="Close Console" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
             </MenuItem>
         </Menu>
 
-        <StackPanel Visibility="{Binding PathVisibility}" DockPanel.Dock="Top">
-            <Label x:Name="Location" Margin="10,20,10,0" HorizontalAlignment="Center"/>
-            <DockPanel Margin="10,0,10,10">
-                <Button x:Name="Browse" Width="60" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
+        <StackPanel Visibility="{Binding PathVisibility, Converter={StaticResource BoolToVis}}" DockPanel.Dock="Top" Margin="10,20,10,10">
+            <Label x:Name="Location" HorizontalAlignment="Center"/>
+            <DockPanel>
+                <Button x:Name="Browse" Width="60" Margin="5,0,0,0" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
                 <TextBox x:Name="BackupPath" Foreground="Aqua"/>
             </DockPanel>
         </StackPanel>
 
-        <Label x:Name="Instruction" Margin="10,0,10,0" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+        <StackPanel DockPanel.Dock="Top" Margin="10">
+            <Label x:Name="Instruction" HorizontalAlignment="Center"/>
+            <DockPanel Visibility="{Binding DriveVisibility, Converter={StaticResource BoolToVis}}">
+                <Button x:Name="RefreshDrives" Width="60" Margin="5,0,0,0" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
+                <ComboBox x:Name="Drives"/>
+            </DockPanel>
 
-        <DockPanel Visibility="{Binding DriveVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
-            <Button x:Name="RefreshDrives" Width="60" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
-            <ComboBox x:Name="Drives"/>
-        </DockPanel>
+            <DockPanel Visibility="{Binding BackupSourceVisibility}">
+                <Button x:Name="BrowseSource" Width="60" Margin="5,0,0,0" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
+                <TextBox x:Name="BackupSource"/>
+            </DockPanel>
 
-        <DockPanel Visibility="{Binding BackupSourceVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
-            <Button x:Name="BrowseSource" Width="60" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
-            <TextBox x:Name="BackupSource"/>
-        </DockPanel>
-
-        <DockPanel Margin="10,0,10,10" HorizontalAlignment="Right" DockPanel.Dock="Top">
-            <Button x:Name="Backup" Width="60" DockPanel.Dock="Right" Content="{Binding BackupButtonText}"/>
-            <Button x:Name="Restore" Width="60" DockPanel.Dock="Right" Content="{Binding RestoreButtonText}"/>
-        </DockPanel>
+            <DockPanel Margin="0,10,0,0" HorizontalAlignment="Right" DockPanel.Dock="Top">
+                <Button x:Name="Backup" Width="60" Margin="5,0,0,0" DockPanel.Dock="Right" Content="{Binding BackupButtonText}"/>
+                <Button x:Name="Restore" Width="60" DockPanel.Dock="Right" Content="{Binding RestoreButtonText}"/>
+            </DockPanel>
+        </StackPanel>
 
         <Label x:Name="Output" Foreground="Aqua" HorizontalContentAlignment="Left" Margin="10,0,10,10" DockPanel.Dock="Top"/>
 
-        <DockPanel Visibility="{Binding LogVisibility}" DockPanel.Dock="Top" LastChildFill="True">
+        <DockPanel Visibility="{Binding LogVisibility, Converter={StaticResource BoolToVis}}" DockPanel.Dock="Top" Margin="10">
             <StackPanel DockPanel.Dock="Top">
-                <Label x:Name="LogLabel" Margin="10,10,10,0" HorizontalAlignment="Center"/>
-                <DockPanel  Margin="10,0,10,10">
-                    <Button x:Name="RefreshLogs" Width="60" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
+                <Label x:Name="LogLabel" HorizontalAlignment="Center"/>
+                <DockPanel>
+                    <Button x:Name="RefreshLogs" Width="60" Margin="5,0,0,0" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
                     <ComboBox x:Name="Logs"/>
                 </DockPanel>
             </StackPanel>
 
-            <ScrollViewer Margin="10,0,10,10">
+            <ScrollViewer Margin="0,10,0,0">
                 <TextBlock x:Name="Viewer" TextWrapping="Wrap"/>
             </ScrollViewer>
         </DockPanel>

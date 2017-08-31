@@ -8,6 +8,7 @@
                 <ResourceDictionary Source="Style.xaml"/>
                 <ResourceDictionary>
                     <local:UtilityBootstrapper x:Key="Bootstrapper" />
+                    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
                 </ResourceDictionary>
                 
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
