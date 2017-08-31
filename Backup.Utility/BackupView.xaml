@@ -6,15 +6,15 @@
         FontFamily="pack//application:,,,/Fonts/TRON.TTF"><!--Doesn't work.. :c-->
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="&lt; File &gt;">
+            <MenuItem Header="{Binding FileMenuItemText}" FontSize="12">
                 <MenuItem x:Name="Exit" Header="Exit"/>
             </MenuItem>
-            <MenuItem Header="&lt; View &gt;">
+            <MenuItem Header="{Binding ViewMenuItemText}" FontSize="12">
                 <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVis}"/>
                 <MenuItem x:Name="PathVisibility" Header="Backup Path" IsCheckable="True" IsChecked="{Binding PathVis}"/>
                 <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVis}"/>
             </MenuItem>
-            <MenuItem Header="&lt; Options &gt;">
+            <MenuItem Header="{Binding OptionsMenuItemText}" FontSize="12">
                 <MenuItem x:Name="CloseConsole" Header="Close Console" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
             </MenuItem>
         </Menu>
@@ -22,26 +22,26 @@
         <StackPanel Visibility="{Binding PathVisibility}" DockPanel.Dock="Top">
             <Label x:Name="Location" Margin="10,20,10,0" HorizontalAlignment="Center"/>
             <DockPanel Margin="10,0,10,10">
-                <Button x:Name="Browse" Width="60" DockPanel.Dock="Right">BROWSE</Button>
-                <TextBox x:Name="BackupPath"/>
+                <Button x:Name="Browse" Width="60" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
+                <TextBox x:Name="BackupPath" Foreground="Aqua"/>
             </DockPanel>
         </StackPanel>
 
         <Label x:Name="Instruction" Margin="10,0,10,0" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
 
         <DockPanel Visibility="{Binding DriveVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
-            <Button x:Name="RefreshDrives" Width="60" DockPanel.Dock="Right">REFRESH</Button>
+            <Button x:Name="RefreshDrives" Width="60" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
             <ComboBox x:Name="Drives"/>
         </DockPanel>
 
         <DockPanel Visibility="{Binding BackupSourceVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
-            <Button x:Name="BrowseSource" Width="60" DockPanel.Dock="Right">BROWSE</Button>
+            <Button x:Name="BrowseSource" Width="60" DockPanel.Dock="Right" Content="{Binding BrowseButtonText}"/>
             <TextBox x:Name="BackupSource"/>
         </DockPanel>
 
         <DockPanel Margin="10,0,10,10" HorizontalAlignment="Right" DockPanel.Dock="Top">
-            <Button x:Name="Backup" Width="60" DockPanel.Dock="Right">BACKUP</Button>
-            <Button x:Name="Restore" Width="60" DockPanel.Dock="Right">RESTORE</Button>
+            <Button x:Name="Backup" Width="60" DockPanel.Dock="Right" Content="{Binding BackupButtonText}"/>
+            <Button x:Name="Restore" Width="60" DockPanel.Dock="Right" Content="{Binding RestoreButtonText}"/>
         </DockPanel>
 
         <Label x:Name="Output" Foreground="Aqua" HorizontalContentAlignment="Left" Margin="10,0,10,10" DockPanel.Dock="Top"/>
@@ -50,7 +50,7 @@
             <StackPanel DockPanel.Dock="Top">
                 <Label x:Name="LogLabel" Margin="10,10,10,0" HorizontalAlignment="Center"/>
                 <DockPanel  Margin="10,0,10,10">
-                    <Button x:Name="RefreshLogs" Width="60" DockPanel.Dock="Right">REFRESH</Button>
+                    <Button x:Name="RefreshLogs" Width="60" DockPanel.Dock="Right" Content="{Binding RefreshButtonText}"/>
                     <ComboBox x:Name="Logs"/>
                 </DockPanel>
             </StackPanel>

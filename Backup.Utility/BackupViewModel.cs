@@ -227,5 +227,14 @@ namespace Backup.Utility
                 NotifyOfPropertyChange(() => Viewer);
             }
         }
+
+        public static string BrowseButtonText => "BROWSE";
+        public static string RefreshButtonText => "REFRESH";
+        public static string BackupButtonText => "BACKUP";
+        public static string RestoreButtonText => "RESTORE";
+
+        public static string FileMenuItemText => "< FILE >";
+        public static string ViewMenuItemText => "< VIEW >";
+        public static string OptionsMenuItemText => "< OPTIONS >";
     }
 }
