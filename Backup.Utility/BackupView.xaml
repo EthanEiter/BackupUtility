@@ -1,61 +1,64 @@
 ﻿<Window x:Class="Backup.Utility.BackupView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        ResizeMode="NoResize" Width="496" Height="500" Title="Backup Utility" 
+        ResizeMode="NoResize" Width="496" Height="520" Title="Backup Utility" 
         Icon="pack://application:,,,/Resources/backup.ico"
         FontFamily="pack//application:,,,/Fonts/TRON.TTF"><!--Doesn't work.. :c-->
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
-            <Menu>
-                <MenuItem Header="File">
-                    <MenuItem x:Name="Exit" Header="Exit"/>
-                </MenuItem>
-                <MenuItem Header="View">
-                    <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVis}"/>
-                    <MenuItem x:Name="PathVisibility" Header="Install Path" IsCheckable="True" IsChecked="{Binding PathVis}"/>
-                    <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVis}"/>
-                </MenuItem>
-                <MenuItem Header="Options">
-                    <MenuItem x:Name="CloseConsole" Header="Close Console" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
-                </MenuItem>
-            </Menu>
+    <DockPanel LastChildFill="True">
+        <Menu>
+            <MenuItem Header="&lt; File &gt;">
+                <MenuItem x:Name="Exit" Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVis}"/>
+                <MenuItem x:Name="PathVisibility" Header="Backup Path" IsCheckable="True" IsChecked="{Binding PathVis}"/>
+                <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVis}"/>
+            </MenuItem>
+            <MenuItem Header="Options">
+                <MenuItem x:Name="CloseConsole" Header="Close Console" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
+            </MenuItem>
+        </Menu>
 
-            <StackPanel Visibility="{Binding PathVisibility}">
-                <Label x:Name="Location" Margin="10,10,10,0"/>
-                <DockPanel Margin="10,0,10,10">
-                    <TextBox x:Name="BackupPath"/>
-                    <Button x:Name="Browse">BROWSE</Button>
-                </DockPanel>
-            </StackPanel>
-
-            <Label x:Name="Instruction" Margin="10,0,10,0"/>
-
-            <DockPanel Visibility="{Binding DriveVisibility}" Margin="10,0,10,10">
-                <ComboBox x:Name="Drives"/>
-                <Button x:Name="RefreshDrives">REFRESH</Button>
+        <StackPanel Visibility="{Binding PathVisibility}" DockPanel.Dock="Top">
+            <Label x:Name="Location" Margin="10,20,10,0" HorizontalAlignment="Center"/>
+            <DockPanel Margin="10,0,10,10">
+                <Button x:Name="Browse" Width="60" DockPanel.Dock="Right">BROWSE</Button>
+                <TextBox x:Name="BackupPath"/>
             </DockPanel>
-
-            <DockPanel Visibility="{Binding BackupSourceVisibility}" Margin="10,0,10,10">
-                <TextBox x:Name="BackupSource"/>
-                <Button x:Name="BrowseSource">BROWSE</Button>
-            </DockPanel>
-
-            <DockPanel Margin="10,0,10,10" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <Button x:Name="Restore">RESTORE</Button>
-                <Button x:Name="Backup">BACKUP</Button>
-            </DockPanel>
-
-            <Label x:Name="Output" HorizontalContentAlignment="Left" BorderThickness="0,0,0,1" Margin="10,0,10,10" Height="30"/>
-            <StackPanel Visibility="{Binding LogVisibility}">
-                <Label x:Name="LogLabel" Margin="10,10,10,0"/>
-                <DockPanel  Margin="10,0,10,10">
-                    <ComboBox x:Name="Logs"/>
-                    <Button x:Name="RefreshLogs">REFRESH</Button>
-                </DockPanel>
-            </StackPanel>
         </StackPanel>
-        <ScrollViewer Margin="10,0,10,10" DockPanel.Dock="Bottom" Visibility="{Binding LogVisibility}">
-            <TextBlock x:Name="Viewer" TextWrapping="Wrap"/>
-        </ScrollViewer>
+
+        <Label x:Name="Instruction" Margin="10,0,10,0" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+
+        <DockPanel Visibility="{Binding DriveVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
+            <Button x:Name="RefreshDrives" Width="60" DockPanel.Dock="Right">REFRESH</Button>
+            <ComboBox x:Name="Drives"/>
+        </DockPanel>
+
+        <DockPanel Visibility="{Binding BackupSourceVisibility}" Margin="10,0,10,10" DockPanel.Dock="Top">
+            <Button x:Name="BrowseSource" Width="60" DockPanel.Dock="Right">BROWSE</Button>
+            <TextBox x:Name="BackupSource"/>
+        </DockPanel>
+
+        <DockPanel Margin="10,0,10,10" HorizontalAlignment="Right" DockPanel.Dock="Top">
+            <Button x:Name="Backup" Width="60" DockPanel.Dock="Right">BACKUP</Button>
+            <Button x:Name="Restore" Width="60" DockPanel.Dock="Right">RESTORE</Button>
+        </DockPanel>
+
+        <Label x:Name="Output" HorizontalContentAlignment="Left" BorderThickness="0,0,0,1" Margin="10,0,10,10" Height="30" DockPanel.Dock="Top"/>
+
+        <DockPanel Visibility="{Binding LogVisibility}" DockPanel.Dock="Top" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top">
+                <Label x:Name="LogLabel" Margin="10,10,10,0" HorizontalAlignment="Center"/>
+                <DockPanel  Margin="10,0,10,10">
+                    <Button x:Name="RefreshLogs" Width="60" DockPanel.Dock="Right">REFRESH</Button>
+                    <ComboBox x:Name="Logs"/>
+                </DockPanel>
+            </StackPanel>
+
+            <ScrollViewer Margin="10,0,10,10">
+                <TextBlock x:Name="Viewer" TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </DockPanel>
+
     </DockPanel>
 </Window>
