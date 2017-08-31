@@ -1,6 +1,0 @@
-C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Installer\bin\Debug\Backup.Utility.Installer.exe
-C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Installer\bin\Debug\Backup.Utility.Installer.wixpdb
-obj\Debug\Product.wixobj
-obj\Debug\Installer.wixproj.BindContentsFileList.txt
-obj\Debug\Installer.wixproj.BindOutputsFileList.txt
-obj\Debug\Installer.wixproj.BindBuiltOutputsFileList.txt

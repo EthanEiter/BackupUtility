@@ -1,2 +1,0 @@
-C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Installer\bin\Debug\Backup.Utility.Installer.exe
-C:\Users\netWARIOR\Documents\Projects\Backup.Utility\Installer\bin\Debug\Backup.Utility.Installer.wixpdb
