@@ -50,7 +50,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="10,0,10,10" DockPanel.Dock="Top">
             <TextBlock x:Name="Output" HorizontalAlignment="Left"/>
-            <TextBlock x:Name="Blinker" Text="_">
+            <TextBlock x:Name="Blinker" Text="__" Margin="4,0,0,0">
                 <TextBlock.Triggers>
                     <EventTrigger RoutedEvent="TextBlock.Loaded">
                         <BeginStoryboard>

@@ -135,8 +135,7 @@ namespace Backup.Utility
             BackupPath = dialog.SelectedPath;
         }
 
-
-        public string Instruction => SettingsManager.DrivesVisibility ? "< SELECT DRIVE >" : "< SELECT PATH TO BACKUP >";
+        public bool CanRestore => CanBackup;
 
         public Visibility BackupSourceVisibility => DriveVisibility ? Visibility.Collapsed : Visibility.Visible;
 
@@ -164,12 +163,16 @@ namespace Backup.Utility
 
         public void Backup()
         {
-            if (SettingsManager.DrivesVisibility)
+            if (DriveVisibility)
             {
                 Output = $"BACKING UP {SelectedDrive}";
 
                 var drive = GetSelectedDrive;
-                CommandRunner.BackupDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
+                var process = CommandRunner.BackupDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
+                process.EnableRaisingEvents = true;
+                process.Exited += (sender, e) => {
+                    Output = $"{SelectedDrive} BACKUP COMPLETE";
+                };
             }
             else
             {
@@ -177,20 +180,25 @@ namespace Backup.Utility
 
                 Output = $"BACKING UP {Name}";
 
-                CommandRunner.BackupDrive(Name, BackupSource, BackupPath);
+                var process = CommandRunner.BackupDrive(Name, BackupSource, BackupPath);
+                process.EnableRaisingEvents = true;
+                process.Exited += (sender, e) => {
+                    Output = $"{Name} BACKUP COMPLETE";
+                };
             }
         }
-
-
-        public bool CanRestore => CanBackup;
         public void Restore()
         {
-            if (SettingsManager.DrivesVisibility)
+            if (DriveVisibility)
             {
                 Output = $"RESTORING {SelectedDrive}";
 
                 var drive = GetSelectedDrive;
-                CommandRunner.RestoreDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
+                var process = CommandRunner.RestoreDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
+                process.EnableRaisingEvents = true;
+                process.Exited += (sender, e) => {
+                    Output = $"{SelectedDrive} RESTORE COMPLETE";
+                };
             }
             else
             {
@@ -198,7 +206,11 @@ namespace Backup.Utility
 
                 Output = $"RESTORING {Name}";
 
-                CommandRunner.RestoreDrive(Name, BackupSource, BackupPath);
+                var process = CommandRunner.RestoreDrive(Name, BackupSource, BackupPath);
+                process.EnableRaisingEvents = true;
+                process.Exited += (sender, e) => {
+                    Output = $"{Name} RESTORE COMPLETE";
+                };
             }
         }
 
@@ -226,5 +238,6 @@ namespace Backup.Utility
 
         public string LogLabel => "< VIEW LOGS >";
         public string Location => "< SELECT BACKUP PATH >";
+        public string Instruction => SettingsManager.DrivesVisibility ? "< SELECT DRIVE >" : "< SELECT PATH TO BACKUP >";
     }
 }

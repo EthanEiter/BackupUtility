@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Backup Utility" Language="1033" Version="1.0.2" Manufacturer="Ethan Eiter" UpgradeCode="2BB03088-89C3-4D06-B644-F1887E5BAA5A">
+  <Product Id="*" Name="Backup Utility" Language="1033" Version="1.0.3" Manufacturer="Ethan Eiter" UpgradeCode="2BB03088-89C3-4D06-B644-F1887E5BAA5A">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
