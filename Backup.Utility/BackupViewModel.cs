@@ -6,17 +6,20 @@ using System.Windows;
 using Backup.Utility.Core;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Backup.Utility
 {
     public class BackupViewModel : PropertyChangedBase
     {
-        public void Exit() => Process.GetCurrentProcess().CloseMainWindow();
-
+        private string _viewer;
+        private string _drive;
+        private string _log;
+        private string _output;
 
         public bool PathVisibility
         {
-            get { return SettingsManager.PathVisibility; }
+            get => SettingsManager.PathVisibility;
             set
             {
                 SettingsManager.PathVisibility = value;
@@ -24,10 +27,9 @@ namespace Backup.Utility
             }
         }
 
-
         public bool LogVisibility
         {
-            get { return SettingsManager.LogVisibility; }
+            get => SettingsManager.LogVisibility;
             set
             {
                 SettingsManager.LogVisibility = value;
@@ -35,10 +37,9 @@ namespace Backup.Utility
             }
         }
 
-
         public bool CloseConsole
         {
-            get { return SettingsManager.CloseConsole; }
+            get => SettingsManager.CloseConsole;
             set
             {
                 SettingsManager.CloseConsole = value;
@@ -46,10 +47,9 @@ namespace Backup.Utility
             }
         }
 
-
         public string BackupPath
         {
-            get{ return SettingsManager.BackupPath; }
+            get => SettingsManager.BackupPath;
             set
             {
                 SettingsManager.BackupPath = value;
@@ -59,6 +59,74 @@ namespace Backup.Utility
             }
         }
 
+        public bool DriveVisibility
+        {
+            get => SettingsManager.DrivesVisibility;
+            set
+            {
+                SettingsManager.DrivesVisibility = value;
+                NotifyOfPropertyChange(() => DriveVisibility);
+                NotifyOfPropertyChange(() => BackupSourceVisibility);
+                NotifyOfPropertyChange(() => Instruction);
+                NotifyOfPropertyChange(() => CanBackup);
+                NotifyOfPropertyChange(() => CanRestore);
+            }
+        }
+
+        public string SelectedDrive
+        {
+            get => _drive;
+            set
+            {
+                _drive = value;
+                NotifyOfPropertyChange(() => SelectedDrive);
+                NotifyOfPropertyChange(() => CanBackup);
+                NotifyOfPropertyChange(() => CanRestore);
+            }
+        }
+
+        public string BackupSource
+        {
+            get => SettingsManager.BackupSource;
+            set
+            {
+                SettingsManager.BackupSource = value;
+                NotifyOfPropertyChange(() => BackupSource);
+                NotifyOfPropertyChange(() => CanBackup);
+                NotifyOfPropertyChange(() => CanRestore);
+            }
+        }
+
+        public string SelectedLog
+        {
+            get => _log;
+            set
+            {
+                _log = value;
+                NotifyOfPropertyChange(() => SelectedLog);
+                Viewer = SettingsManager.GetLog(SelectedLog);
+            }
+        }
+
+        public string Viewer
+        {
+            get => _viewer;
+            set
+            {
+                _viewer = value;
+                NotifyOfPropertyChange(() => Viewer);
+            }
+        }
+
+        public string Output
+        {
+            get => $"OUTPUT> {_output}";
+            set
+            {
+                _output = value;
+                NotifyOfPropertyChange(() => Output);
+            }
+        }
 
         public void Browse()
         {
@@ -70,52 +138,15 @@ namespace Backup.Utility
 
         public string Instruction => SettingsManager.DrivesVisibility ? "< SELECT DRIVE >" : "< SELECT PATH TO BACKUP >";
 
-
-        public bool DriveVisibility
-        {
-            get { return SettingsManager.DrivesVisibility; }
-            set
-            {
-                SettingsManager.DrivesVisibility = value;
-                NotifyOfPropertyChange(() => DriveVisibility);
-                NotifyOfPropertyChange(() => BackupSourceVisibility);
-                NotifyOfPropertyChange(() => Instruction);
-                NotifyOfPropertyChange(() => CanBackup);
-                NotifyOfPropertyChange(() => CanRestore);
-            }
-        }
         public Visibility BackupSourceVisibility => DriveVisibility ? Visibility.Collapsed : Visibility.Visible;
 
-
-        private string _drive;
-        public string SelectedDrive
-        {
-            get { return _drive; }
-            set
-            {
-                _drive = value;
-                NotifyOfPropertyChange(() => SelectedDrive);
-                NotifyOfPropertyChange(() => CanBackup);
-                NotifyOfPropertyChange(() => CanRestore);
-            }
-        }
-        public IEnumerable<string> Drives => DriveInfo.GetDrives().Where(x => x.DriveType == DriveType.Removable || x.DriveType == DriveType.Fixed).Select(x => $"({x.RootDirectory}) {x.VolumeLabel}");
+        public IEnumerable<string> Drives 
+            => DriveInfo.GetDrives()
+                .Where(x => x.DriveType == DriveType.Removable || x.DriveType == DriveType.Fixed)
+                .Select(x => $"({x.RootDirectory}) {x.VolumeLabel}");
 
 
         public void RefreshDrives() => NotifyOfPropertyChange(() => Drives);
-
-
-        public string BackupSource
-        {
-            get { return SettingsManager.BackupSource; }
-            set
-            {
-                SettingsManager.BackupSource = value;
-                NotifyOfPropertyChange(() => BackupSource);
-                NotifyOfPropertyChange(() => CanBackup);
-                NotifyOfPropertyChange(() => CanRestore);
-            }
-        }
 
         public void BrowseSource()
         {
@@ -127,14 +158,10 @@ namespace Backup.Utility
 
         private DriveInfo GetSelectedDrive => DriveInfo.GetDrives().First(x => SelectedDrive.Contains(x.RootDirectory.ToString()) && SelectedDrive.Contains(x.VolumeLabel));
         public bool CanBackup
-        {
-            get
-            {
-                if (DriveVisibility)
-                    return !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(SelectedDrive));
-                return !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(BackupSource));
-            }
-        }
+            => DriveVisibility 
+                ? !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(SelectedDrive)) 
+                : !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(BackupSource));
+
         public void Backup()
         {
             if (SettingsManager.DrivesVisibility)
@@ -175,45 +202,12 @@ namespace Backup.Utility
             }
         }
 
-
-        private string _output = "OUTPUT> _";
-        public string Output
-        {
-            get { return _output; }
-            set
-            {
-                _output = $"OUTPUT: {value}_";
-                NotifyOfPropertyChange(() => Output);
-            }
-        }
-
         public List<string> Logs => SettingsManager.LogList;
-        private string _log;
-        public string SelectedLog
-        {
-            get { return _log; }
-            set
-            {
-                _log = value;
-                NotifyOfPropertyChange(() => SelectedLog);
-                Viewer = SettingsManager.GetLog(SelectedLog);
-            }
-        }
 
+        public void RefreshLogs() 
+            => NotifyOfPropertyChange(() => Logs);
 
-        public void RefreshLogs() => NotifyOfPropertyChange(() => Logs);
-
-
-        private string _viewer;
-        public string Viewer
-        {
-            get { return _viewer; }
-            set
-            {
-                _viewer = value;
-                NotifyOfPropertyChange(() => Viewer);
-            }
-        }
+        public void Exit() => Process.GetCurrentProcess().CloseMainWindow();
 
         public static string BrowseButtonText => "BROWSE";
         public static string RefreshButtonText => "REFRESH";

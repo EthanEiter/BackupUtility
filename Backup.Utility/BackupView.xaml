@@ -4,6 +4,9 @@
         ResizeMode="NoResize" Width="496" Height="520" Title="Backup Utility" 
         Icon="pack://application:,,,/Resources/backup.ico"
         FontFamily="pack//application:,,,/Fonts/TRON.TTF"><!--Doesn't work..-->
+    <Window.Resources>
+
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{Binding FileMenuItemText}" FontSize="10">
@@ -45,7 +48,22 @@
             </DockPanel>
         </StackPanel>
 
-        <TextBlock x:Name="Output" HorizontalAlignment="Left" Margin="10,0,10,10" DockPanel.Dock="Top"/>
+        <StackPanel Orientation="Horizontal" Margin="10,0,10,10" DockPanel.Dock="Top">
+            <TextBlock x:Name="Output" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="Blinker" Text="_">
+                <TextBlock.Triggers>
+                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="Blinker"
+                                Storyboard.TargetProperty="Opacity" From="0" To="1"
+                                RepeatBehavior="Forever" AutoReverse="True" Duration="0:0:0.5"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </TextBlock.Triggers>
+            </TextBlock>
+        </StackPanel>
 
         <DockPanel Visibility="{Binding LogVisibility, Converter={StaticResource BoolToVis}}" DockPanel.Dock="Top" Margin="10">
             <StackPanel DockPanel.Dock="Top">
