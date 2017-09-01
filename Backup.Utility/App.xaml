@@ -5,23 +5,24 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style.xaml"/>
-                <ResourceDictionary>
-                    <local:UtilityBootstrapper x:Key="Bootstrapper" />
-                    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-                </ResourceDictionary>
-                
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
 
                 <!-- accent resource -->
                 <!--“Red”, “Green”, “Blue”, “Purple”, “Orange”, “Lime”, “Emerald”, “Teal”, “Cyan”, “Cobalt”, “Indigo”, “Violet”, “Pink”, “Magenta”, “Crimson”, “Amber”, “Yellow”, “Brown”, “Olive”, “Steel”, “Mauve”, “Taupe”, “Sienna”-->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Teal.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Teal.xaml" />-->
+                <ResourceDictionary Source="pack://application:,,,/Backup.Utility;Component/Style/Aqua.xaml"/>
 
                 <!-- theme resource -->
                 <!--“BaseLight”, “BaseDark”-->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+
+                <ResourceDictionary>
+                    <local:UtilityBootstrapper x:Key="Bootstrapper" />
+                    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="Style/Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
