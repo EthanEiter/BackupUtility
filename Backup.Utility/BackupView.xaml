@@ -10,15 +10,15 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{Binding FileMenuItemText}" FontSize="10">
-                <MenuItem x:Name="Exit" Header="Exit"/>
+                <MenuItem x:Name="Exit" Header="{Binding ExitMenuItemText}"/>
             </MenuItem>
             <MenuItem Header="{Binding ViewMenuItemText}" FontSize="10">
-                <MenuItem x:Name="DriveVisibility" Header="Removable Drives" IsCheckable="True" IsChecked="{Binding DriveVisibility}"/>
-                <MenuItem x:Name="PathVisibility" Header="Backup Path" IsCheckable="True" IsChecked="{Binding PathVisibility}"/>
-                <MenuItem x:Name="LogVisibility" Header="Log Viewer" IsCheckable="True" IsChecked="{Binding LogVisibility}"/>
+                <MenuItem x:Name="DriveVisibility" Header="{Binding RemovableDrivesMenuItemText}" IsCheckable="True" IsChecked="{Binding DriveVisibility}"/>
+                <MenuItem x:Name="PathVisibility" Header="{Binding BackupPathMenuItemText}" IsCheckable="True" IsChecked="{Binding PathVisibility}"/>
+                <MenuItem x:Name="LogVisibility" Header="{Binding LogViewerMenuItemText}" IsCheckable="True" IsChecked="{Binding LogVisibility}"/>
             </MenuItem>
             <MenuItem Header="{Binding OptionsMenuItemText}" FontSize="10">
-                <MenuItem x:Name="CloseConsole" Header="Close Console" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
+                <MenuItem x:Name="CloseConsole" Header="{Binding CloseConsoleMenuItemText}" ToolTip="Close the console after a backup or restore has finished" IsCheckable="True" IsChecked="{Binding CloseConsole}"/>
             </MenuItem>
         </Menu>
 

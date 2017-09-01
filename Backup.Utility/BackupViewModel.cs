@@ -218,6 +218,12 @@ namespace Backup.Utility
         public static string ViewMenuItemText => "< VIEW >";
         public static string OptionsMenuItemText => "< OPTIONS >";
 
+        public static string ExitMenuItemText => "Exit";
+        public static string RemovableDrivesMenuItemText => "Removable Drives";
+        public static string BackupPathMenuItemText => "Backup Path";
+        public static string LogViewerMenuItemText => "Log Viewer";
+        public static string CloseConsoleMenuItemText => "Close Console";
+
         public string LogLabel => "< VIEW LOGS >";
         public string Location => "< SELECT BACKUP PATH >";
     }
