@@ -7,14 +7,14 @@ namespace Backup.Utility.Core
     {
         public static Process BackupDrive(string driveName, string driveRoot, string rootBackupPath)
         {
-            var drive_Name = driveName.Replace(' ', '_');
+            var drive_Name = string.IsNullOrEmpty(driveName) ? "UNKNOWN" : driveName.Replace(' ', '_');
             var fullLogPath = $"{Path.Combine(SettingsManager.LogsPath, $"{drive_Name}_backup_log.txt")}";
             return BackupRestore(driveRoot, Path.Combine(rootBackupPath, drive_Name), fullLogPath);
         }
 
         public static Process RestoreDrive(string driveName, string driveRoot, string rootBackupPath)
         {
-            var drive_Name = driveName.Replace(' ', '_');
+            var drive_Name = string.IsNullOrEmpty(driveName) ? "UNKNOWN" : driveName.Replace(' ', '_');
             var fullLogPath = $"{Path.Combine(SettingsManager.LogsPath, $"{drive_Name}_restore_log.txt")}";
             return BackupRestore(Path.Combine(rootBackupPath, drive_Name), driveRoot, fullLogPath);
         }
@@ -22,13 +22,12 @@ namespace Backup.Utility.Core
         private static Process BackupRestore(string source, string destination, string logPath)
         {
             CreateLogsDir();
-            var close = SettingsManager.CloseConsole ? "/c" : "/k";
-            var command = 
-                $@"{close} ROBOCOPY {$"\"{source}\""} {$"\"{destination}\""} /R:0 /W:0 /mir /V /tee /log:{$"\"{logPath}\""} && {close} ATTRIB -h -s {$"\"{destination}\""}";
-            return Run(command);
+            var exit = SettingsManager.CloseConsole ? string.Empty : " -noexit ";
+            var command = $" -noprofile {exit}" +
+                $"robocopy '{source}' '{destination}' @('/R:0\', '/W:0', '/mir', '/V', '/tee', '/log:{logPath}');" +
+                $"attrib -h -s '{destination}'";
+            return Process.Start("powershell.exe", command);
         }
-
-        private static Process Run(string command) => Process.Start("CMD.exe", command);
 
         private static void CreateLogsDir()
         {

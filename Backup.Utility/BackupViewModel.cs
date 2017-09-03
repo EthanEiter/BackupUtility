@@ -6,7 +6,6 @@ using System.Windows;
 using Backup.Utility.Core;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Backup.Utility
 {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Backup.Utility.Core
 {
@@ -74,14 +75,22 @@ namespace Backup.Utility.Core
             get
             {
                 var list = new List<string>();
-                foreach(var file in Directory.GetFiles(LogsPath))
-                {
-                    list.Add(Path.GetFileNameWithoutExtension(file));
-                }
+                if(Directory.Exists(LogsPath))
+                    foreach(var file in Directory.GetFiles(LogsPath))
+                    {
+                        list.Add(Path.GetFileNameWithoutExtension(file));
+                    }
                 return list;
             }
         }
 
-        public static string GetLog(string logName) => File.ReadAllText(Path.Combine(LogsPath, $"{logName}.txt"));
+        public static string GetLog(string logName)
+        {
+            var lines = File.ReadLines(Path.Combine(LogsPath, $"{logName}.txt")).Reverse().Take(15).Reverse();
+            var log = string.Empty;
+            foreach(var line in lines)
+                log += $"{line}\n";
+            return log;
+        }
     }
 }
