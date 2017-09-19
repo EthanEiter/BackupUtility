@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Windows;
 using Backup.Utility.Core;
 using System.IO;
 using System.Linq;
@@ -13,6 +12,8 @@ namespace Backup.Utility
     {
         private string _viewer;
         private string _drive;
+        private string _driveSource;
+        private string _driveDest;
         private string _log;
         private string _output;
 
@@ -46,6 +47,16 @@ namespace Backup.Utility
             }
         }
 
+        public bool CloneDrive
+        {
+            get => SettingsManager.Clone;
+            set
+            {
+                SettingsManager.Clone = value;
+                NotifyOfPropertyChange(() => CloneDrive);
+            }
+        }
+
         public string BackupPath
         {
             get => SettingsManager.BackupPath;
@@ -65,7 +76,6 @@ namespace Backup.Utility
             {
                 SettingsManager.DrivesVisibility = value;
                 NotifyOfPropertyChange(() => DriveVisibility);
-                NotifyOfPropertyChange(() => BackupSourceVisibility);
                 NotifyOfPropertyChange(() => Instruction);
                 NotifyOfPropertyChange(() => CanBackup);
                 NotifyOfPropertyChange(() => CanRestore);
@@ -81,6 +91,28 @@ namespace Backup.Utility
                 NotifyOfPropertyChange(() => SelectedDrive);
                 NotifyOfPropertyChange(() => CanBackup);
                 NotifyOfPropertyChange(() => CanRestore);
+            }
+        }
+
+        public string SelectedDrivesSource
+        {
+            get => _driveSource;
+            set
+            {
+                _driveSource = value;
+                NotifyOfPropertyChange(() => DrivesDestination);
+                NotifyOfPropertyChange(() => CanClone);
+            }
+        }
+
+        public string SelectedDrivesDestination
+        {
+            get => _driveDest;
+            set
+            {
+                _driveDest = value;
+                NotifyOfPropertyChange(() => DrivesSource);
+                NotifyOfPropertyChange(() => CanClone);
             }
         }
 
@@ -136,8 +168,6 @@ namespace Backup.Utility
 
         public bool CanRestore => CanBackup;
 
-        public Visibility BackupSourceVisibility => DriveVisibility ? Visibility.Collapsed : Visibility.Visible;
-
         public IEnumerable<string> Drives 
             => DriveInfo.GetDrives()
                 .Where(x => x.DriveType == DriveType.Removable || x.DriveType == DriveType.Fixed)
@@ -145,6 +175,17 @@ namespace Backup.Utility
 
 
         public void RefreshDrives() => NotifyOfPropertyChange(() => Drives);
+
+        public IEnumerable<string> DrivesSource => Drives.Where(x => !x.Equals(SelectedDrivesDestination));
+
+        public IEnumerable<string> DrivesDestination => Drives.Where(x => !x.Equals(SelectedDrivesSource));
+
+        public void RefreshDrivesSource()
+        {
+            NotifyOfPropertyChange(() => Drives);
+            NotifyOfPropertyChange(() => DrivesSource);
+            NotifyOfPropertyChange(() => DrivesDestination);
+        }
 
         public void BrowseSource()
         {
@@ -154,7 +195,8 @@ namespace Backup.Utility
         }
 
 
-        private DriveInfo GetSelectedDrive => DriveInfo.GetDrives().First(x => SelectedDrive.Contains(x.RootDirectory.ToString()) && SelectedDrive.Contains(x.VolumeLabel));
+        private DriveInfo GetSelectedDrive(string drive)
+            => DriveInfo.GetDrives().First(x => drive.Contains(x.RootDirectory.ToString()) && drive.Contains(x.VolumeLabel));
         public bool CanBackup
             => DriveVisibility 
                 ? !(string.IsNullOrEmpty(BackupPath) || string.IsNullOrEmpty(SelectedDrive)) 
@@ -164,25 +206,25 @@ namespace Backup.Utility
         {
             if (DriveVisibility)
             {
-                Output = $"BACKING UP {SelectedDrive}";
+                Output = $"BACKING UP {SelectedDrive.ToUpper()}";
 
-                var drive = GetSelectedDrive;
+                var drive = GetSelectedDrive(SelectedDrive);
                 var process = CommandRunner.BackupDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{SelectedDrive} BACKUP COMPLETE";
+                    Output = $"{SelectedDrive.ToUpper()} BACKUP COMPLETE";
                 };
             }
             else
             {
                 var Name = Path.GetFileName(BackupSource);
 
-                Output = $"BACKING UP {Name}";
+                Output = $"BACKING UP {Name.ToUpper()}";
 
                 var process = CommandRunner.BackupDrive(Name, BackupSource, BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{Name} BACKUP COMPLETE";
+                    Output = $"{Name.ToUpper()} BACKUP COMPLETE";
                 };
             }
         }
@@ -190,28 +232,44 @@ namespace Backup.Utility
         {
             if (DriveVisibility)
             {
-                Output = $"RESTORING {SelectedDrive}";
+                Output = $"RESTORING {SelectedDrive.ToUpper()}";
 
-                var drive = GetSelectedDrive;
+                var drive = GetSelectedDrive(SelectedDrive);
                 var process = CommandRunner.RestoreDrive(drive.VolumeLabel, drive.RootDirectory.ToString(), BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{SelectedDrive} RESTORE COMPLETE";
+                    Output = $"{SelectedDrive.ToUpper()} RESTORE COMPLETE";
                 };
             }
             else
             {
                 var Name = Path.GetFileName(BackupSource);
 
-                Output = $"RESTORING {Name}";
+                Output = $"RESTORING {Name.ToUpper()}";
 
                 var process = CommandRunner.RestoreDrive(Name, BackupSource, BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{Name} RESTORE COMPLETE";
+                    Output = $"{Name.ToUpper()} RESTORE COMPLETE";
                 };
             }
         }
+
+        public void Clone()
+        {
+            Output = $"CLONING {SelectedDrivesSource.ToUpper()} TO {SelectedDrivesDestination.ToUpper()}";
+            var sourceDrive = GetSelectedDrive(SelectedDrivesSource);
+            var destDrive = GetSelectedDrive(SelectedDrivesDestination);
+            var process = CommandRunner.Clone(sourceDrive.VolumeLabel, sourceDrive, destDrive);
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, e) => {
+                Output = "CLONE COMPLETE";
+            };
+        }
+
+        public bool CanClone 
+            => !string.IsNullOrWhiteSpace(SelectedDrivesSource) 
+            && !string.IsNullOrWhiteSpace(SelectedDrivesDestination);
 
         public List<string> Logs => SettingsManager.LogList;
 
@@ -224,6 +282,7 @@ namespace Backup.Utility
         public static string RefreshButtonText => "REFRESH";
         public static string BackupButtonText => "BACKUP";
         public static string RestoreButtonText => "RESTORE";
+        public static string CloneButtonText => "CLONE";
 
         public static string FileMenuItemText => "< FILE >";
         public static string ViewMenuItemText => "< VIEW >";
@@ -234,9 +293,13 @@ namespace Backup.Utility
         public static string BackupPathMenuItemText => "Backup Path";
         public static string LogViewerMenuItemText => "Log Viewer";
         public static string CloseConsoleMenuItemText => "Close Console";
+        public static string CloneDriveMenuItemText => "Clone Drive";
 
         public string LogLabel => "< VIEW LOGS >";
         public string Location => "< SELECT BACKUP PATH >";
         public string Instruction => SettingsManager.DrivesVisibility ? "< SELECT DRIVE >" : "< SELECT PATH TO BACKUP >";
+
+        public string DriveCloneSourceLabel => "< SELECT SOURCE DRIVE >";
+        public string DriveCloneDestinationLabel => "<SELECT DESTINATION DRIVE >";
     }
 }

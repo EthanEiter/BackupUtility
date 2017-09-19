@@ -12,7 +12,7 @@ namespace Backup.Utility.Core
 
         public static bool CloseConsole
         {
-            get { return (bool)Settings.Default["CloseConsole"]; }
+            get => (bool)Settings.Default["CloseConsole"];
             set
             {
                 Settings.Default["CloseConsole"] = value;
@@ -22,7 +22,7 @@ namespace Backup.Utility.Core
 
         public static bool PathVisibility
         {
-            get { return (bool)Settings.Default["PathVisibility"]; }
+            get => (bool)Settings.Default["PathVisibility"];
             set
             {
                 Settings.Default["PathVisibility"] = value;
@@ -32,7 +32,7 @@ namespace Backup.Utility.Core
 
         public static bool LogVisibility
         {
-            get { return (bool)Settings.Default["LogVisibility"]; }
+            get => (bool)Settings.Default["LogVisibility"];
             set
             {
                 Settings.Default["LogVisibility"] = value;
@@ -42,7 +42,7 @@ namespace Backup.Utility.Core
 
         public static bool DrivesVisibility
         {
-            get { return (bool)Settings.Default["DrivesVisibility"]; }
+            get => (bool)Settings.Default["DrivesVisibility"];
             set
             {
                 Settings.Default["DrivesVisibility"] = value;
@@ -50,9 +50,19 @@ namespace Backup.Utility.Core
             }
         }
 
+        public static bool Clone
+        {
+            get => (bool)Settings.Default["Clone"];
+            set
+            {
+                Settings.Default["Clone"] = value;
+                Settings.Default.Save();
+            }
+        }
+
         public static string BackupPath
         {
-            get { return Settings.Default["BackupPath"].ToString(); }
+            get => Settings.Default["BackupPath"].ToString();
             set
             {
                 Settings.Default["BackupPath"] = value;
@@ -62,7 +72,7 @@ namespace Backup.Utility.Core
 
         public static string BackupSource
         {
-            get { return Settings.Default["BackupSource"].ToString(); }
+            get => Settings.Default["BackupSource"].ToString();
             set
             {
                 Settings.Default["BackupSource"] = value;
@@ -88,8 +98,10 @@ namespace Backup.Utility.Core
         {
             var lines = File.ReadLines(Path.Combine(LogsPath, $"{logName}.txt")).Reverse().Take(15).Reverse();
             var log = string.Empty;
-            foreach(var line in lines)
+            foreach (var line in lines)
+            {
                 log += $"{line}\n";
+            }
             return log;
         }
     }

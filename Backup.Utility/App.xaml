@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Backup.Utility.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Backup.Utility">
+             xmlns:local="clr-namespace:Backup.Utility"
+             xmlns:style="clr-namespace:Backup.Utility.Style">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,6 +22,11 @@
                 <ResourceDictionary>
                     <local:UtilityBootstrapper x:Key="Bootstrapper" />
                     <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+                    <style:InverseBooleanConverter x:Key="InvBool"/>
+                    <style:ValueConverterGroup x:Key="NotBoolToVis">
+                        <style:InverseBooleanConverter />
+                        <BooleanToVisibilityConverter />
+                    </style:ValueConverterGroup>
                 </ResourceDictionary>
                 <ResourceDictionary Source="Style/Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>

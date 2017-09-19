@@ -5,6 +5,12 @@ namespace Backup.Utility.Core
 {
     public class CommandRunner
     {
+        public static Process Clone(string driveSourceName, string driveSource, string driveDestination)
+        {
+            var fullLogPath = $"{Path.Combine(SettingsManager.LogsPath, $"{driveSourceName}_clone_log.txt")}";
+            return BackupRestore(driveSource, driveDestination, fullLogPath);
+        }
+
         public static Process BackupDrive(string driveName, string driveRoot, string rootBackupPath)
         {
             var drive_Name = string.IsNullOrEmpty(driveName) ? "UNKNOWN" : driveName.Replace(' ', '_');
