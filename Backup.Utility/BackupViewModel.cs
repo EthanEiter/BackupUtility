@@ -260,7 +260,7 @@ namespace Backup.Utility
             Output = $"CLONING {SelectedDrivesSource.ToUpper()} TO {SelectedDrivesDestination.ToUpper()}";
             var sourceDrive = GetSelectedDrive(SelectedDrivesSource);
             var destDrive = GetSelectedDrive(SelectedDrivesDestination);
-            var process = CommandRunner.Clone(sourceDrive.VolumeLabel, sourceDrive, destDrive);
+            var process = CommandRunner.Clone(sourceDrive.VolumeLabel, sourceDrive.RootDirectory.ToString(), destDrive.RootDirectory.ToString());
             process.EnableRaisingEvents = true;
             process.Exited += (sender, e) => {
                 Output = "CLONE COMPLETE";
