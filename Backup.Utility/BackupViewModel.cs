@@ -135,7 +135,7 @@ namespace Backup.Utility
             {
                 _log = value;
                 NotifyOfPropertyChange(() => SelectedLog);
-                Viewer = SettingsManager.GetLog(SelectedLog);
+                Viewer = Core.LogManager.GetLog(SelectedLog);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Backup.Utility
         public void Browse()
         {
             var dialog = new FolderBrowserDialog();
-            var result = dialog.ShowDialog();
+            dialog.ShowDialog();
             BackupPath = dialog.SelectedPath;
         }
 
@@ -190,7 +190,7 @@ namespace Backup.Utility
         public void BrowseSource()
         {
             var dialog = new FolderBrowserDialog();
-            var result = dialog.ShowDialog();
+            dialog.ShowDialog();
             BackupSource = dialog.SelectedPath;
         }
 
@@ -213,18 +213,26 @@ namespace Backup.Utility
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
                     Output = $"{SelectedDrive.ToUpper()} BACKUP COMPLETE";
+                    NotifyOfPropertyChange(() => Logs);
+                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, "backup", true);
                 };
             }
             else
             {
-                var Name = Path.GetFileName(BackupSource);
+                var name = Path.GetFileName(BackupSource);
+                if (name == null)
+                {
+                    return;
+                }
 
-                Output = $"BACKING UP {Name.ToUpper()}";
+                Output = $"BACKING UP {name.ToUpper()}";
 
-                var process = CommandRunner.BackupDrive(Name, BackupSource, BackupPath);
+                var process = CommandRunner.BackupDrive(name, BackupSource, BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{Name.ToUpper()} BACKUP COMPLETE";
+                    Output = $"{name.ToUpper()} BACKUP COMPLETE";
+                    NotifyOfPropertyChange(() => Logs);
+                    SelectedLog = Core.LogManager.GetLogName(name, "backup", true);
                 };
             }
         }
@@ -239,18 +247,26 @@ namespace Backup.Utility
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
                     Output = $"{SelectedDrive.ToUpper()} RESTORE COMPLETE";
+                    NotifyOfPropertyChange(() => Logs);
+                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, "restore", true);
                 };
             }
             else
             {
-                var Name = Path.GetFileName(BackupSource);
+                var name = Path.GetFileName(BackupSource);
+                if (name == null)
+                {
+                    return;
+                }
 
-                Output = $"RESTORING {Name.ToUpper()}";
+                Output = $"RESTORING {name.ToUpper()}";
 
-                var process = CommandRunner.RestoreDrive(Name, BackupSource, BackupPath);
+                var process = CommandRunner.RestoreDrive(name, BackupSource, BackupPath);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) => {
-                    Output = $"{Name.ToUpper()} RESTORE COMPLETE";
+                    Output = $"{name.ToUpper()} RESTORE COMPLETE";
+                    NotifyOfPropertyChange(() => Logs);
+                    SelectedLog = Core.LogManager.GetLogName(name, "restore", true);
                 };
             }
         }
@@ -264,6 +280,8 @@ namespace Backup.Utility
             process.EnableRaisingEvents = true;
             process.Exited += (sender, e) => {
                 Output = "CLONE COMPLETE";
+                NotifyOfPropertyChange(() => Logs);
+                SelectedLog = Core.LogManager.GetLogName(sourceDrive.VolumeLabel, "restore", true);
             };
         }
 
@@ -271,7 +289,7 @@ namespace Backup.Utility
             => !string.IsNullOrWhiteSpace(SelectedDrivesSource) 
             && !string.IsNullOrWhiteSpace(SelectedDrivesDestination);
 
-        public List<string> Logs => SettingsManager.LogList;
+        public List<string> Logs => Core.LogManager.LogList;
 
         public void RefreshLogs() 
             => NotifyOfPropertyChange(() => Logs);

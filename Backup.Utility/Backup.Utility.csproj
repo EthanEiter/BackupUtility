@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="BackupViewModel.cs" />
     <Compile Include="Core\CommandRunner.cs" />
+    <Compile Include="Core\LogManager.cs" />
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Style\ValueConverterGroup.cs" />
     <Compile Include="Style\InverseBooleanConverter.cs" />
