@@ -214,7 +214,7 @@ namespace Backup.Utility
                 process.Exited += (sender, e) => {
                     Output = $"{SelectedDrive.ToUpper()} BACKUP COMPLETE";
                     NotifyOfPropertyChange(() => Logs);
-                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, "backup", true);
+                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, Functions.Backup, true);
                 };
             }
             else
@@ -232,7 +232,7 @@ namespace Backup.Utility
                 process.Exited += (sender, e) => {
                     Output = $"{name.ToUpper()} BACKUP COMPLETE";
                     NotifyOfPropertyChange(() => Logs);
-                    SelectedLog = Core.LogManager.GetLogName(name, "backup", true);
+                    SelectedLog = Core.LogManager.GetLogName(name, Functions.Backup, true);
                 };
             }
         }
@@ -248,7 +248,7 @@ namespace Backup.Utility
                 process.Exited += (sender, e) => {
                     Output = $"{SelectedDrive.ToUpper()} RESTORE COMPLETE";
                     NotifyOfPropertyChange(() => Logs);
-                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, "restore", true);
+                    SelectedLog = Core.LogManager.GetLogName(drive.VolumeLabel, Functions.Restore, true);
                 };
             }
             else
@@ -266,7 +266,7 @@ namespace Backup.Utility
                 process.Exited += (sender, e) => {
                     Output = $"{name.ToUpper()} RESTORE COMPLETE";
                     NotifyOfPropertyChange(() => Logs);
-                    SelectedLog = Core.LogManager.GetLogName(name, "restore", true);
+                    SelectedLog = Core.LogManager.GetLogName(name, Functions.Restore, true);
                 };
             }
         }
@@ -281,7 +281,7 @@ namespace Backup.Utility
             process.Exited += (sender, e) => {
                 Output = "CLONE COMPLETE";
                 NotifyOfPropertyChange(() => Logs);
-                SelectedLog = Core.LogManager.GetLogName(sourceDrive.VolumeLabel, "restore", true);
+                SelectedLog = Core.LogManager.GetLogName(sourceDrive.VolumeLabel, Functions.Clone, true);
             };
         }
 
